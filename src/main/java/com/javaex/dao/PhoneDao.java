@@ -27,7 +27,7 @@ public class PhoneDao {
 
 	// 메소드 일반
 
-	public void getConnection() {
+	protected void getConnection() {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, id, pw);
@@ -38,7 +38,7 @@ public class PhoneDao {
 		}
 	} // getConnection();
 
-	public void close() {
+	protected void close() {
 		try {
 			if (rs != null) {
 				rs.close();
@@ -106,4 +106,73 @@ public class PhoneDao {
 		return personList;		
 	} // personSelect
 	
-}
+	public void personDelete(int no){
+		this.getConnection();
+		try {
+			String query = "";
+			query +=" delete from person ";
+			query +=" where person_id = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			System.out.println("error:" + e);
+		}
+		this.close();
+	} // personDelete()
+
+	public void selectOne(int no) {
+		this.getConnection();
+		PersonVo personVo = new PersonVo();
+		try {
+			String query = "";
+			query += " select	person_id, ";
+			query += " 			name, ";
+			query += "  		hp, ";
+			query += "  		company ";
+			query += " from person ";
+			query += " where person_id = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);			
+			rs = pstmt.executeQuery();
+			
+			
+		}catch(SQLException e) {
+			System.out.println("error:" + e);
+		}
+		this.close();
+	}
+	
+	public void personUpdate(int no) {
+		this.getConnection();
+		try {
+		
+			String name = "name";
+			String hp = "hp";
+			String company = "company";
+			
+			
+			String query = "";
+			query += " update person ";
+			query += " set name = ?, ";
+			query += " 	   hp = ?, ";
+			query += "     company = ? ";
+			query += " where person_id = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, name);
+			pstmt.setString(2, hp);
+			pstmt.setString(3, company);
+			pstmt.setInt(4, no);
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			System.out.println("error:" + e);
+		}
+		this.close();
+	}
+	
+	
+}//phoneDao

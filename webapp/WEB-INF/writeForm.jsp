@@ -38,7 +38,7 @@
 	
 </form>
 <br><br><br><br>
-<a href="">리스트페이지로 이동</a>
+<a href="http://localhost:8080/phonebook3/pbc?action=list">리스트페이지로 이동</a>
 
 
 </body>
