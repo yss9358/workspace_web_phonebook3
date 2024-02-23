@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.javaex.vo.PersonVo"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%
-
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,28 +18,28 @@
 </p>
 
 
-<form action="http://localhost:8080/phonebook3/pbc" method="get">
+<form action="/phonebook3/pbc" method="get">
 	<div>
 		<label>이름(name):</label>
-		<input type="text" name="name" value="" placeholder="">
+		<input type="text" name="name" value="${requestScope.personVo.name}" placeholder="">
 	</div>
 	
 	<div>
 		<label>핸드폰(hp):</label>
-		<input type="text" name="hp" value="" placeholder="">
+		<input type="text" name="hp" value="${requestScope.personVo.hp}" placeholder="">
 	</div>
 	
 	<div>
 		<label>회사(company):</label>
-		<input type="text" name="company" value="" placeholder="">
+		<input type="text" name="company" value="${requestScope.personVo.company}" placeholder="">
 	</div>
-	<input type="text" name="action" value="update"><br>
+	<input type="hidden" name="action" value="update"><br>
 	<button type="submit">수정</button>
-	
+	<input type="hidden" name="no" value="${requestScope.personVo.personId}">
 </form>
 
 <br><br><br><br>
-<a href="http://localhost:8080/phonebook3/pbc?action=list">리스트페이지로 이동</a>
+<a href="/phonebook3/pbc?action=list">리스트페이지로 이동</a>
 
 
 </body>

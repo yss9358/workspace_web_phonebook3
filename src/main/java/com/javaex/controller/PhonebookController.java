@@ -33,32 +33,43 @@ public class PhonebookController extends HttpServlet {
 			
 			// 저장을 위해 Vo로 묶어서 사용
 			PersonVo personVo = new PersonVo(name, hp, company);
+			
 			// db관련 업무
 			PhoneDao personDao = new PhoneDao();
+			
 			// db에 저장
 			personDao.personInsert(personVo);
-			WebUtil.redirect(request, response, "http://localhost:8080/phonebook3/pbc?action=list");
+			
+			WebUtil.redirect(request, response, "/phonebook3/pbc?action=list");
 		} else if("delete".equals(action)) {
 			/*System.out.println("delete");*/
 			int no = Integer.parseInt(request.getParameter("no"));
+			
 			PhoneDao personDao = new PhoneDao();
 			personDao.personDelete(no);
-			WebUtil.redirect(request, response, "http://localhost:8080/phonebook3/pbc?action=list");
+			
+			WebUtil.redirect(request, response, "/phonebook3/pbc?action=list");
 		} else if("uform".equals(action)) {
 			/*System.out.println("uform 수정폼");*/
 			int no = Integer.parseInt(request.getParameter("no"));
-			PhoneDao personDao = new PhoneDao();
-			PersonVo personVo = new PersonVo();
-			personDao.selectOne(no);
 			
+			PhoneDao personDao = new PhoneDao();
+			PersonVo personVo = personDao.selectOne(no);
+			
+			request.setAttribute("personVo", personVo);
 			
 			WebUtil.forward(request, response, "/WEB-INF/updateForm.jsp");
 			
 		} else if("update".equals(action)) {
-			System.out.println("update");
-			int no = Integer.parseInt(request.getParameter("no"));
+			/*System.out.println("update");*/
+			int id = Integer.parseInt(request.getParameter("no"));
+			String name = request.getParameter("name");
+			String hp = request.getParameter("hp");
+			String company = request.getParameter("company");
+			PersonVo personVo = new PersonVo(id, name, hp, company);
+			
 			PhoneDao personDao = new PhoneDao();
-			personDao.personUpdate(no);
+			personDao.personUpdate(personVo);
 			
 			WebUtil.redirect(request, response, "/phonebook3/pbc?action=list");
 		} else { // 아무것도 안쳐도 list로 가게끔
@@ -69,7 +80,6 @@ public class PhonebookController extends HttpServlet {
 			request.setAttribute("personList", personList);
 			
 			WebUtil.forward(request, response, "/WEB-INF/list.jsp");
-			
 		
 		}
 	} // doGet

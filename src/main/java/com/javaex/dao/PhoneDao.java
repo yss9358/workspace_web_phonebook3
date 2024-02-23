@@ -53,25 +53,6 @@ public class PhoneDao {
 			System.out.println("error:" + e);
 		}
 	} // close();
-	public void personInsert(PersonVo personVo) {
-		this.getConnection();
-		try {
-			String query = "";
-			query += " insert into person ";
-			query += " value(null, ?, ?, ?) ";
-
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, personVo.getName());
-			pstmt.setString(2, personVo.getHp());
-			pstmt.setString(3, personVo.getCompany());
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		this.close();
-	} // personInsert 
 	
 	public List<PersonVo> personSelect() {
 		this.getConnection();
@@ -106,6 +87,26 @@ public class PhoneDao {
 		return personList;		
 	} // personSelect
 	
+	public void personInsert(PersonVo personVo) {
+		this.getConnection();
+		try {
+			String query = "";
+			query += " insert into person ";
+			query += " value(null, ?, ?, ?) ";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, personVo.getName());
+			pstmt.setString(2, personVo.getHp());
+			pstmt.setString(3, personVo.getCompany());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		this.close();
+	} // personInsert 
+	
 	public void personDelete(int no){
 		this.getConnection();
 		try {
@@ -123,9 +124,9 @@ public class PhoneDao {
 		this.close();
 	} // personDelete()
 
-	public void selectOne(int no) {
+	public PersonVo selectOne(int no) {
 		this.getConnection();
-		PersonVo personVo = new PersonVo();
+		PersonVo personVo =null;
 		try {
 			String query = "";
 			query += " select	person_id, ";
@@ -139,22 +140,25 @@ public class PhoneDao {
 			pstmt.setInt(1, no);			
 			rs = pstmt.executeQuery();
 			
+			while(rs.next()){
+				int id = rs.getInt("person_id");
+				String name = rs.getString("name");
+				String hp = rs.getString("hp");
+				String company = rs.getString("company");
+				
+				personVo = new PersonVo(id, name, hp, company);
+			}
 			
 		}catch(SQLException e) {
 			System.out.println("error:" + e);
 		}
 		this.close();
+		return personVo;
 	}
 	
-	public void personUpdate(int no) {
+	public void personUpdate(PersonVo personVo) {
 		this.getConnection();
 		try {
-		
-			String name = "name";
-			String hp = "hp";
-			String company = "company";
-			
-			
 			String query = "";
 			query += " update person ";
 			query += " set name = ?, ";
@@ -163,15 +167,18 @@ public class PhoneDao {
 			query += " where person_id = ? ";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, name);
-			pstmt.setString(2, hp);
-			pstmt.setString(3, company);
-			pstmt.setInt(4, no);
+			pstmt.setString(1, personVo.getName());
+			pstmt.setString(2, personVo.getHp());
+			pstmt.setString(3, personVo.getCompany());
+			pstmt.setInt(4, personVo.getPersonId());
 			pstmt.executeUpdate();
+			
+			
 		}catch(SQLException e) {
 			System.out.println("error:" + e);
 		}
 		this.close();
+		
 	}
 	
 	

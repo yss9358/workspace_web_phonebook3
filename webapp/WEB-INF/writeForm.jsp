@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
 </p>
 
 
-<form action="http://localhost:8080/phonebook3/pbc" method="get">
+<form action="/phonebook3/pbc" method="get">
 	<div>
 		<label>이름(name):</label>
 		<input type="text" name="name" value="">
@@ -33,12 +33,12 @@
 		<label>회사(company):</label>
 		<input type="text" name="company" value="">
 	</div>
-	<input type="text" name="action" value="insert"><br>
+	<input type="hidden" name="action" value="insert"><br>
 	<button type="submit">등록</button>
 	
 </form>
 <br><br><br><br>
-<a href="http://localhost:8080/phonebook3/pbc?action=list">리스트페이지로 이동</a>
+<a href="/phonebook3/pbc?action=list">리스트페이지로 이동</a>
 
 
 </body>
